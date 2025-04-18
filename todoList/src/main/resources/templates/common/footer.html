@@ -1,0 +1,8 @@
+<!-- 타임리프 값을 JS에 맞게 사용 -->
+<script th:inline="javascript">
+    const message = /*[[${message}]]*/ "전달 받은 메세지";
+
+    if(message != null) {
+        alert(message);
+    }
+</script>

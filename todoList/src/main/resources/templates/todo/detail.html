@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${todo.todoTitle}">todoTitle</title>
+    <link rel="stylesheet" href="/css/detail.css">
+</head>
+<body>
+    <h3 th:text="${todo.todoTitle}">todoTitle</h3>
+    
+    <table border="1">
+        <tr>
+            <th>번호</th>
+            <td th:text="${todo.todoNo}"></td>
+        </tr>
+
+        <tr>
+            <th>등록 날짜</th>
+            <td>[[${todo.regDate}]]</td>
+        </tr>
+
+        <tr>
+            <th>완료 여부</th>
+            <td>
+                <button type="button" 
+                        class="complete-btn"
+
+                        th:text="${todo.complete}"
+                        th:data-todo-no="${todo.todoNo}">
+                        <!-- data-* 속성
+                            - 데이터에 대한 확장성을 고려하여 설계된 속성
+                            -js에서 요소.dataset을 이용해 해당 값을 얻어 갈 수 있음
+                        -->
+                완료버튼
+                </button>
+            </td>
+        </tr>
+
+        <tr>
+            <th>내용</th>
+            <td class="todo-content">[[${todo.todoContent}]]</td>
+        </tr>
+    </table>
+
+    <button id="goToList">목록으로</button>
+    <button id="updateBtn"
+            th:data-todo-no="${todo.todoNo}">수정</button>
+    <button id="deleteBtn"
+            th:data-todo-no="${todo.todoNo}">삭제</button>
+
+    <th:block th:replace="~{common/footer}"></th:block>
+    <script src="/js/detail.js"></script>
+</body>
+</html>
