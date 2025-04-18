@@ -104,4 +104,12 @@ public class AjaxController {
 		// -> JS가 인식할 수 없기 때문에 JSON으로 변환 필요
 		// -> HttpMessageConvertor가 JSON 형태로 변환하여 반환
 	}
+
+	@ResponseBody
+	@GetMapping("detail")
+	public Todo selectTodo(Todo todo) {
+		log.debug("todoNo : "+todo.getTodoNo());
+
+		return service.todoDetail(todo.getTodoNo());
+	}
 }

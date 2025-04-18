@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
 
   <link rel="stylesheet" href="/css/ajax-main.css">
 </head>
+
 <body>
   <h1>Todo List - Ajax 버전</h1>
   <pre>
@@ -27,8 +29,7 @@
     </div>
 
     <div>
-      <textarea id="todoContent" 
-        cols="50" rows="5" placeholder="상세 내용"></textarea>
+      <textarea id="todoContent" cols="50" rows="5" placeholder="상세 내용"></textarea>
     </div>
 
     <button id="addBtn">추가 하기</button>
@@ -50,7 +51,7 @@
       <th>완료 여부</th>
       <th>등록 날짜</th>
     </thead>
-    
+
     <tbody id="tbody">
     </tbody>
   </table>
@@ -59,12 +60,12 @@
     할 일 상세 조회 시 출력되는 화면 
     popup layer : 현재 페이지 위에 새로운 레이어를 띄우는 것
   -->
-                       <!-- 처음에 숨겨놓기 -->
+  <!-- 처음에 숨겨놓기 -->
   <div id="popupLayer" class="popup-hidden">
 
     <div class="popup-row">
       번호 : <span id="popupTodoNo"></span>
-      | 
+      |
       제목 : <span id="popupTodoTitle"></span>
 
       <span id="popupClose">&times;</span>
@@ -72,7 +73,7 @@
 
     <div class="popup-row">
       완료 여부 : <span id="popupComplete"></span>
-      | 
+      |
       등록일 : <span id="popupRegDate"></span>
     </div>
 
@@ -90,13 +91,7 @@
     </div>
   </div>
 
-
-
-
-
-
-
-  <!-- 수정 팝업 레이어 (처음에 숨겨져 있음)-->
+  <!-- ////////////////// 수정 팝업 레이어 (처음에 숨겨져 있음) ////////////////// -->
   <div id="updateLayer" class="popup-hidden">
     <div class="popup-row">
       제목 : <input type="text" id="updateTitle">
@@ -107,17 +102,11 @@
     </div>
 
     <div class="btn-container">
-      <button id="updateBtn">수정</button>      
-      <button id="updateCancel">취소</button>      
+      <button id="updateBtn">수정</button>
+      <button id="updateCancel">취소</button>
     </div>
-
   </div>
-
-
-
-
-
-
+  <!-- ////////////////////////////////////////////////////////////////////// -->
 
   <!-- 
     footer.html 조각을 해당 위치에 추가 
@@ -127,10 +116,5 @@
 
   <script src="/js/ajax-main.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-

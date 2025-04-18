@@ -216,10 +216,39 @@ const selectTodoList = () => {
 
 // 비동기로 할 일 상세 조회하는 함수
 const selectTodo = (url) => {
-    // 매개변수 url =="/ajax/detail?todoNo=1" 형태의 문자열
+    // 매개변수 url =="/ajax/detail?todoNo=1" 형태의 문자열    
 
     // fetch 요청시 url 이용
+    fetch(url)
+    .then(resp => resp.json())
+    .then(todo => {
+
+        console.log(todo);
+        console.log(todo.todoTitle);
+
+        popupTodoNo.innerText = todo.todoNo;
+        popupTodoTitle.innerText = todo.todoTitle;
+        popupComplete.innerText = todo.complete;
+        popupRegDate.innerText = todo.regDate;
+        popupTodoContent.innerText = todo.todoContent;
+        popupLayer.classList.remove("popup-hidden");
+    })
 }
+
+// 팝업 창 닫기
+popupClose.addEventListener("click",()=>{
+    popupLayer.classList.add("popup-hidden");
+})
+
+// 완료 여부 변경하기
+changeComplete.addEventListener("click",()=>{
+    const path = `/ajax/changeComplete?todoNo=${popupTodoNo}`;
+    fetch(path)
+    .then(resp => resp.json())
+    .theb(result => {
+
+    })
+})
 
 // 호출부
 getTotalCount()
