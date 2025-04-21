@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.kh.todo.model.dto.Todo;
@@ -107,9 +109,17 @@ public class AjaxController {
 
 	@ResponseBody
 	@GetMapping("detail")
-	public Todo selectTodo(Todo todo) {
-		log.debug("todoNo : "+todo.getTodoNo());
+	public Todo selectTodo(@RequestParam("todoNo") int todoNo) {
 
-		return service.todoDetail(todo.getTodoNo());
+		return service.todoDetail(todoNo);
+		// return 자료형 : Todo(dto)
+		// -> HttpMessageConvertor가 JSON 형태로 변환하여 반환
 	}
+	
+	 @ResponseBody
+	 @DeleteMapping("delete")
+	 public int todoDelete(@RequestBody int todoNo) {
+		 return service.todoDelete(todoNo);
+	 }
+	 
 }
