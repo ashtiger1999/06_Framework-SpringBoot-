@@ -54,6 +54,21 @@ COMMIT;
 
 -- 25.04.21 해당 위치까지 수행
 
+-- 암호화된 비밀번호(평문 : pass01!) 업데이트
+UPDATE "MEMBER" SET
+MEMBER_PW = '$2a$10$gAQSG7BPCR06NdpozF8sM.1V3sTcsBSkkL2kVN8a2ReoPukVLcF5m'
+WHERE MEMBER_NO = 1;
+
+COMMIT;
+
+-- 로그인 SQL
+SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME,
+MEMBER_PW, MEMBER_TEL, MEMBER_ADDRESS, PROFILE_IMG, AUTHORUTY
+TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE
+FROM "MEMBER"
+WHERE MEMBER_EMIAL = 'user01@kh.or.kr'
+AND MEMBER_DEL_FL = 'N';
+
 -----------------------------------------
 
 /* 이메일, 인증키 저장 테이블 생성 */
@@ -319,6 +334,12 @@ REFERENCES "COMMENT" (
 );
 
 ---------------------- CHECK -----------------------
+-- 회원 탈퇴 여부 CHECK 제약 조건 추가
+ALTER TABLE "MEMBER" ADD 
+CONSTRAINT "MEMBER_DEL_CHECK"
+CHECK("MEMBER_DEL_FL" IN ('Y','N'));
+--수행함
+
 
 -- 게시글 삭제 여부
 ALTER TABLE "BOARD" ADD
