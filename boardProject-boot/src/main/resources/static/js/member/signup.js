@@ -5,12 +5,12 @@
 // - false : 해당 항목은 유효하지 않은 형식으로 작성됨
 // - true  : 해당 항목은 유효한 형식으로 작성됨
 const checkObj = {
-    "memberEmail"     : false,
-    "memberPw"        : false,
-    "memberPwConfirm" : false,
-    "memberNickname"  : false,
-    "memberTel"       : false,
-    "authKey"         : false
+    "memberEmail": false,
+    "memberPw": false,
+    "memberPwConfirm": false,
+    "memberNickname": false,
+    "memberTel": false,
+    "authKey": false
 }
 
 // 인증번호 받기 버튼 요소
@@ -50,11 +50,11 @@ memberEmail.addEventListener("input", e => {
     const inputEmail = e.target.value;
 
     // 3) 입력된 이메일이 없을 경우
-    if(inputEmail.trim().length===0) {
+    if (inputEmail.trim().length === 0) {
         emailMessage.innerText = "이메일을 입력해주세요";
 
         // 메세지에 색상을 추가하는 클래스 모두 제거
-        emailMessage.classList.remove('confirm','error');
+        emailMessage.classList.remove('confirm', 'error');
 
         // 이메일 유효성 검사 여부를 false로 변경
         checkObj.memberEmail = false;
@@ -74,7 +74,7 @@ memberEmail.addEventListener("input", e => {
 
     // 입력받은 이메일이 정규식과 일치하지 않는 경우
     // == 알맞은 이메일 형태가 아닌 경우
-    if(!regExp.test(inputEmail)) {
+    if (!regExp.test(inputEmail)) {
         emailMessage.innerText = "알맞은 이메일 형식으로 작성해주세요.";
         emailMessage.classList.add("error");
         emailMessage.classList.remove("confirm");
@@ -84,44 +84,98 @@ memberEmail.addEventListener("input", e => {
 
     // 5) 유효한 이메일 형식일 경우 중복 검사 수행
     // 비동기 요청(ajax)
-    fetch("/member/checkEmail?memberEmail="+inputEmail)
-    .then(resp => resp.text())
-    .then(count => {
-        // count : 1이면 중복 , 0 이면 중복 X
-        // ==  : 값이 같은지           ex) "1" == 1 -> true
-        // === : 값과 타입까지 같은지   ex) "1" === 1 -> false
-        if(count == 1) { // 중복 O
-            emailMessage.innerText = "이미 사용중인 이메일입니다."
-            emailMessage.classList.add("error");
-            emailMessage.classList.remove("confirm");
-            checkObj.memberEmail = false;
-            return;
-        }
+    fetch("/member/checkEmail?memberEmail=" + inputEmail)
+        .then(resp => resp.text())
+        .then(count => {
+            // count : 1이면 중복 , 0 이면 중복 X
+            // ==  : 값이 같은지           ex) "1" == 1 -> true
+            // === : 값과 타입까지 같은지   ex) "1" === 1 -> false
+            if (count == 1) { // 중복 O
+                emailMessage.innerText = "이미 사용중인 이메일입니다."
+                emailMessage.classList.add("error");
+                emailMessage.classList.remove("confirm");
+                checkObj.memberEmail = false;
+                return;
+            }
 
-        emailMessage.innerText = "사용 가능한 이메일입니다."
-        emailMessage.classList.add("confirm");
-        emailMessage.classList.remove("error");
-        checkObj.memberEmail = true;
-    })
+            emailMessage.innerText = "사용 가능한 이메일입니다."
+            emailMessage.classList.add("confirm");
+            emailMessage.classList.remove("error");
+            checkObj.memberEmail = true;
+        })
 
 })
 
-//인증 번호 받기 클릭시 
-sendAuthKeyBtn.addEventListener("click",()=>{
+// 인증 번호 받기 클릭시 
+sendAuthKeyBtn.addEventListener("click", () => {
 
-    //중복 되지 않은 유효한 이메일을 입력한 경우가 아니면
-    if(!checkObj.memberEmail){
-      alert("유효한 이메일 작성후 클릭해주세요");
-      return;
+    // 중복 되지 않은 유효한 이메일을 입력한 경우가 아니면
+    if (!checkObj.memberEmail) {
+        alert("유효한 이메일 작성후 클릭해주세요");
+        return;
     }
-    //클릭 시 타이머 숫자 초기화
+    // 클릭 시 타이머 숫자 초기화
     min = initMin;
     sec = initSec;
-  
-    //이전 동작 중인 인터벌 클리어(없애기)
+
+    // 이전 동작 중인 인터벌 클리어(없애기)
     clearInterval(authTimer);
-  
-    //*************************************
-    //비동기로 서버에서 메일 보내기
-  
-  });
+
+    // *************************************
+    // 비동기로 서버에서 메일 보내기
+    fetch("/email/signup", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: memberEmail.value
+    })
+        .then(resp => resp.text())
+        .then(result => {
+            if (result == 1) {
+                console.log("인증 번호 발송 성공");
+            } else {
+                console.log("인증 번호 발송 실패")
+            }
+        })
+
+    // *************************************
+    // 메일은 비동기로 서베에서 보내라고 놔두고
+    // 화면에서는 타이머 시작하기
+    authKeyMessage.innerText = initTime; // 05:00 세팅
+    authKeyMessage.classList.remove("confirm", "error");
+
+    alert("인증번호가 발송되었습니다");
+
+    // setInterval()
+    // - 지연시간(ms)만큼 시간이 지날떄마다 콜백함수 수행
+
+    // 인증 가능 시간 출력(1초 마다 동작)
+    authTimer() = setInterval(() => {
+
+        authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
+
+        // 0분 0초인 경우 ("00:00" 출력 후)
+        if(min==0&&sec==0) {
+            checkObj.authKey = false;
+            clearInterval(authTimer);
+            authKeyMessage.classList.add("error");
+            authKeyMessage.classList.remove("confirm");
+            return;
+        }
+
+        // 0초인 경우(0초를 출력한 후)
+        if(sec==0) {
+            sec = 60;
+            min--;
+        }
+
+        sec--; // 1초 감소
+
+    }, 1000);
+
+});
+
+// 매개변수 전달받은 숫자가 10미만인 경우(한자리) 앞에 0 붙여서 반환
+function addZero(number) {
+    if (number < 10) return '0' + number;
+    else             return number;
+}
