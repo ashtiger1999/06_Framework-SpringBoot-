@@ -13,5 +13,13 @@
 		WHERE MEMBER_EMAIL = #{MEMBER_EMAIL}
 		AND MEMBER_DEL_FL = 'N'
 	</select>
+	
+	<!-- 이메일 중복 검사 -->
+	<select id="checkEmail" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_EMAIL = #{memberEmail}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
 
 </mapper>

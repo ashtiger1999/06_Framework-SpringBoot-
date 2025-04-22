@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -119,5 +120,22 @@ public class MemberController {
 		status.setComplete(); // 세션을 완료 시킨(==@SessionAttributes로 등록된 세션 제거
 		
 		return "redirect:/";
+	}
+	
+	/** 회원 가입 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("signup")
+	public String signupPage() {
+		return "member/signup";
+	}
+	
+	/** 이메일 중복검사(비동기 요청)
+	 * @return 개수
+	 */
+	@ResponseBody // 응답 본문(fetch)으로 돌려보냄
+	@GetMapping("checkEmail") // GET 방식 요청 /memeber/checkEmail
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
 	}
 }
