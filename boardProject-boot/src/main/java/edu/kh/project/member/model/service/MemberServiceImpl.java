@@ -61,4 +61,55 @@ public class MemberServiceImpl implements MemberService {
 	public int checkEmail(String memberEmail) {
 		return mapper.checkEmail(memberEmail);
 	}
+	
+	// 닉네임 중복검사 서비스
+	@Override
+	public int checkNickname(String memberNickname) {
+		return mapper.checkNickname(memberNickname);
+	}
+	
+	// 회원가입 서비스
+	@Override
+	public int signup(Member inputMember, String[] memberAddress) {
+		
+		// 주소가 입력되지 않으면
+		// inputMembet.getMemberAddress() -> ",,"
+		// memberAddress -> [,,]
+		
+		// 주소가 입력된 경우
+		if(!inputMember.getMemberAddress().equals(",,")) {
+
+			// String.join("구분자", 배열)
+			// -> 배열의 모든 요소 사이에 "구분자"를 추가하여
+			//    하나의 문자열로 만들어 반환하는 메서드
+			String address = String.join("^^^", memberAddress);
+			// [12345, 서울시, e강의장]
+			// -> "12345^^^서울시^^^e강의장
+			
+			// 구분자로 "^^^" 사용한 이유 :
+			// -> 주소, 상세주소에 안쓰일 것 같은 특수문자 작성
+			// -> 나중에 마이페이지에서 주소 부분 수정시
+			//    DB에 저장된 기존 주소를 화면상에 출력해줘야함
+			// -> 다시 3분할 해야할 떄 구분자로 ^^^ 이용할 예정
+			// -> 왜? 그분자가 기본 형태인 , 작성되어있으면
+			//    주소, 상세주소에 , 가 들어오는 경우
+			//    3분할이 아니라 N분할이 될 수 있기 때문
+			
+			// inputMember의 memberAddress로 합쳐진 주소를 세팅
+			inputMember.setMemberAddress(address);
+			
+		} else { // 주소가 입력되지 않은 경우
+			inputMember.setMemberAddress(null); // NULL로 저장
+		}
+		
+		// 비밀번호 암호화 진행
+		
+		// inputMember안의 memberPw -> 평문
+		// 비밀번호를 암호화하여 inputMember 세팅
+		String encPw = bcrypt.encode(inputMember.getMemberPw());
+		inputMember.setMemberPw(encPw);
+		
+		// 회원가입 mapper 메서드 호출
+		return mapper.signup(inputMember);
+	}
 }

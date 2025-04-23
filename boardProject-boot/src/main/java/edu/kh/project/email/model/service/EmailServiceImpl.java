@@ -80,9 +80,11 @@ public class EmailServiceImpl implements EmailService {
 	private String loadHtml(String authKey, String htmlName) {
 		// Context : 타임리프에서 제공하는 HTML 템플릿에 데이터를 전달하기 위해 사용하는 클래스
 		
-		Context context = new Context();
+		Context context = new Context(); // 템플릿에 바인딩할 데이터를 담는 상자
+		context.setVariable("authKey", authKey); // 템플릿에서 사용할 변수 authKey에 값 설정
 		
-		return null;
+		return templateEngine.process("email/"+htmlName, context);
+		// templates/email/signup.html
 	}
 
 	// 인증키와 이메일을 DB에 저장하는 메서드
@@ -110,6 +112,11 @@ public class EmailServiceImpl implements EmailService {
 	// 주로 데이터베이스 기본키, 고유한 식별자를 생성해야할 때 사용
 	private String createAuthKey() {
 		return UUID.randomUUID().toString().substring(0, 6);
+	}
+	
+	@Override
+	public int checkAuthKey(Map<String, String> map) {
+		return mapper.checkAuthKey(map);
 	}
 
 }
