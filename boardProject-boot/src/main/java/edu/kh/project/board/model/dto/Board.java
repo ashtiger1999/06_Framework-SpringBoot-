@@ -1,5 +1,7 @@
 package edu.kh.project.board.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +17,7 @@ public class Board {
 	private String boardTitle;
 	private String boardContent;
 	private String boardWriteDate;
-	private String bpardUpdateDate;
+	private String boardUpdateDate;
 	private int readCount;
 	private String boardDelFl;
 	private int memberNo;
@@ -35,10 +37,10 @@ public class Board {
 	private String thumbnail;
 	
 	// 특정 게시글 이미지 목록 리스트
-	// private List<BoradImg> imageList;
+	private List<BoardImg> imageList;
 	
 	// 특정 게시글 작성 댓글 목록 리스트
-	// private List<Comment> commentList;
+	private List<Comment> commentList;
 	
 	// 좋아요 여부 확인
 	private int likeCheck;
