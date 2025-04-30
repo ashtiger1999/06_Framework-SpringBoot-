@@ -113,7 +113,7 @@
 	</select>
 	
 	<!-- 게시글 상세 조회 -->
-	<select id="selectOne" resultMap="board_rm">
+	<select id="selectOne" resultMap="board_rm" parameterType="map">
 		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CODE, READ_COUNT,
 		MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG,
 		TO_CHAR(BOARD_WRITE_DATE,'YYYY"년" MM"월" DD"일" HH24:MI:SS') 
@@ -185,6 +185,21 @@
 	<!-- 게시들 좋아요 수 조회 -->
 	<select id="selectLikeCount">
 		SELECT COUNT(*) FROM "BOARD_LIKE"
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<!-- 조회 수 1 증가 -->
+	<update id="updateReadCount">
+		UPDATE "BOARD" SET
+		READ_COUNT = READ_COUNT + 1
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+
+
+	<!-- 조회 수 조회 -->
+	<select id="selectReadCount">
+		SELECT READ_COUNT
+		FROM "BOARD"
 		WHERE BOARD_NO = #{boardNo}
 	</select>
 
