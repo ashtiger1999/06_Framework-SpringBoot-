@@ -42,7 +42,7 @@ const updatePreview = (file, order) => {
   // 현재 선택된 이미지 백업(기록해두기)
   lastValidFiles[order] = file;
 
-  // 현재 선택 파일 임지 URL 생성 후 미리보기 img 태그에 대입
+  // 현재 선택 파일 임시 URL 생성 후 미리보기 img 태그에 대입
   const newImageUrl = URL.createObjectURL(file) // 임시 URL 생성
   previewList[order].src = newImageUrl; // 미리보기 img 태그에 대입
   
@@ -121,3 +121,24 @@ form.addEventListener("submit", e => {
     return;
   }
 })
+
+
+$('#summernote').summernote({
+  callbacks: {
+    onImageUpload: function(files) {
+      let formData = new FormData();
+      formData.append("image", files[0]);
+
+      $.ajax({
+        url: '/editBoard/uploadImage', // ✅ 실제 매핑된 경로
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(url) {
+          $('#summernote').summernote('insertImage', url);
+        }
+      });
+    }
+  }
+});

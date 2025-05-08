@@ -52,4 +52,4 @@ if(loginEmail != null) { // 로그인 폼의 이메일 input 태그가 화면상
 
         document.querySelector("input[name='saveId']").checked = true;
     }
-}
+}  
