@@ -53,19 +53,33 @@ public class BoardController {
 	 */
 	@GetMapping("{boardCode:[0-9]+}")
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
-			@RequestParam(value = "cp", required = false, defaultValue = "1") int cp, Model model) {
+								  @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+								  Model model,
+								  @RequestParam Map<String, Object> paramMap) {
+								  // paramMap = {"query" = "검색어", "key" = "tc"}
 
 		// 조회 서비스 호출 후 결과 반환 받기
 		Map<String, Object> map = null;
 
 		// 조건에 따라 서비스 메서드 분기처리 하기 위해 map은 선언만 함
 
-		// 검색이 아닌 경우
-
-		// 게시글 목록 조회 서비스 호출
-		map = service.selectBoardList(boardCode, cp);
-
-		// 검색인 경우
+		// 검색이 아닌 경우 --> paramMap = {}
+		if(paramMap.get("key")==null) {
+			
+			// 게시글 목록 조회 서비스 호출
+			map = service.selectBoardList(boardCode, cp);
+			
+		} else { 
+			// 검색인 경우 --> paramMap = {"query" = "검색어", "key" = "tc"}
+			
+			// boardCode를 paramMap에 추가
+			paramMap.put("boardCode", boardCode);
+			// 검색인 경우 --> paramMap = {"query" = "검색어", "key" = "tc", "boardCode" = 1}
+			
+			// 검색 서비스 호출
+			map = service.searchList(paramMap, cp);
+			
+		}
 
 		// model에 반환받은 값 등록
 		model.addAttribute("pagination", map.get("pagination"));
