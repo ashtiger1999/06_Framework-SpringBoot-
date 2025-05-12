@@ -161,3 +161,23 @@ form.addEventListener("submit", e => {
 	form.append(input); // 자식으로 input 추가
 
 })
+
+$('#summernote').summernote({
+  callbacks: {
+    onImageUpload: function(files) {
+      let formData = new FormData();
+      formData.append("image", files[0]);
+
+      $.ajax({
+        url: '/editBoard/uploadImage', // ✅ 실제 매핑된 경로
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(url) {
+          $('#summernote').summernote('insertImage', url);
+        }
+      });
+    }
+  }
+});

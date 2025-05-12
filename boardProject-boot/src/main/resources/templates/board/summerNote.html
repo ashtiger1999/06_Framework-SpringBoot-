@@ -92,7 +92,7 @@
             <!-- 내용 -->
             <div class="board-content">
                 <textarea id="summernote" name="boardContent" 
-                        th:text="*{boardContent}">게시글 내용</textarea>
+                        th:utext="*{boardContent}">게시글 내용</textarea>
             </div>
 
 
@@ -119,9 +119,9 @@
         
         const imageList = /*[[${board.imageList}]]*/ [];
         const previewList = document.querySelectorAll('img.preview');
-		const orderList = [];  // 기존에 존재하던 이미지의 순서(order)를 기록할 배열
+      const orderList = [];  // 기존에 존재하던 이미지의 순서(order)를 기록할 배열
       
-		for(let img of imageList){
+      for(let img of imageList){
             previewList[img.imgOrder].src = img.imgPath + img.imgRename;
 
             // 미리보기가 출력된 이미지 순서를
@@ -130,6 +130,6 @@
         }
 
     </script>
-
+    <script src="/js/board/boardWrite.js"></script>
 </body>
 </html>
