@@ -70,7 +70,7 @@ public class ImageDeleteScheduling {
 	@Value("${my.board.folder-path}")
 	private String boardFolderPath;
 	
-	@Scheduled(cron = "0,30 * * * * *")
+	@Scheduled(cron = "0 0 0 1 * *")
 	public void scheduling() {
 		log.info("Scheduler Active");
 		
