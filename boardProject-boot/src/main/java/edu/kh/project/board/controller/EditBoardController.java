@@ -85,13 +85,13 @@ public class EditBoardController {
 		inputBoard.setMemberNo(loginMember.getMemberNo());
 		// -> inputBoard에는 총 네가지 세팅됨(boardTitle, boardContent, boardCode, memberNo)
 		
-		// 2. 서미스 메서드 호출 후 결과 반환받기
+		// 2. 서비스 메서드 호출 후 결과 반환받기
 		// -> 성공 시 [상세 조회]를 요청할 수 있도록
 		//	  삽입된 게시글의 번호를 반환받기
 		int boardNo = service.boardInsert(inputBoard, images);
 		log.debug("*---------- : "+boardNo);
 		
-		// 3. 서비스 결과에 따라 mesage, 리다이렉트 경로 지정
+		// 3. 서비스 결과에 따라 message, 리다이렉트 경로 지정
 		String path = null;
 		String message = null;
 		

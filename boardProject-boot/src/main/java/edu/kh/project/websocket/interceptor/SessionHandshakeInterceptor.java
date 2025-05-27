@@ -21,12 +21,6 @@ import jakarta.servlet.http.HttpSession;
 @Component // Bean 등록
 public class SessionHandshakeInterceptor implements HandshakeInterceptor {
 
-    private final MyPageController myPageController;
-
-    SessionHandshakeInterceptor(MyPageController myPageController) {
-        this.myPageController = myPageController;
-    }
-	
 	// 핸들러 동작 전에 수행되는 메서드
 	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, 

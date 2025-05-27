@@ -17,13 +17,13 @@ const updatePreview = (file, order) => {
   // 선택된 파일이 지정된 크기를 초과한 경우 선택 막기
   const maxSize = 1024 * 1024 * 10; // 10MB를 byte 단위로 작성
 
-  if(file.size > maxSize){ // 파일 크기 초과 시
+  if (file.size > maxSize) { // 파일 크기 초과 시
     alert("10MB 이하의 이미지만 선택해 주세요");
 
     // 미리보기는 안되어도 크기가 초과된 파일이 선택되어 있음!!
 
     // 이전 선택된 파일이 없는데 크기 초과 파일을 선택한 경우
-    if(lastValidFiles[order] === null){
+    if (lastValidFiles[order] === null) {
       inputImageList[order].value = ""; // 선택 파일 삭제
       return;
     }
@@ -31,10 +31,10 @@ const updatePreview = (file, order) => {
     // 이전 선택된 파일이 있는데 크기 초과 파일을 선택한 경우
     const dataTransfer = new DataTransfer();
     dataTransfer.items.add(lastValidFiles[order]);
-	// 이전에 유효했던 파일을 저장한 배열(lastValidFiles)에서 특정 순서(order)의 파일을 꺼내어 추가함
+    // 이전에 유효했던 파일을 저장한 배열(lastValidFiles)에서 특정 순서(order)의 파일을 꺼내어 추가함
     inputImageList[order].files = dataTransfer.files;
-	// DataTransfer 객체에 추가된 파일 리스트를 input태그(파일) 리스트에 대입
-	
+    // DataTransfer 객체에 추가된 파일 리스트를 input태그(파일) 리스트에 대입
+
     return;
   }
 
@@ -45,7 +45,7 @@ const updatePreview = (file, order) => {
   // 현재 선택 파일 임시 URL 생성 후 미리보기 img 태그에 대입
   const newImageUrl = URL.createObjectURL(file) // 임시 URL 생성
   previewList[order].src = newImageUrl; // 미리보기 img 태그에 대입
-  
+
 }
 
 
@@ -76,12 +76,12 @@ for (let i = 0; i < inputImageList.length; i++) {
       inputImageList[i].files = dataTransfer.files;
 
       // 이전 선택된 파일로 미리보기 되돌리기
-      updatePreview(lastValidFiles[i], i); 
+      updatePreview(lastValidFiles[i], i);
 
       return;
     }
 
-	// 파일을 재선택한 경우 updatePreview 이용하여 업데이트
+    // 파일을 재선택한 경우 updatePreview 이용하여 업데이트
     updatePreview(file, i);
   })
 
@@ -90,9 +90,9 @@ for (let i = 0; i < inputImageList.length; i++) {
   /* X 버튼 클릭 시 미리보기, 선택된 파일 삭제 */
   deleteImageList[i].addEventListener("click", () => {
 
-    previewList[i].src      = ""; // 미리보기 삭제
+    previewList[i].src = ""; // 미리보기 삭제
     inputImageList[i].value = ""; // 선택된 파일 삭제
-    lastValidFiles[i]       = null; // 백업 파일 삭제
+    lastValidFiles[i] = null; // 백업 파일 삭제
   })
 
 
@@ -104,17 +104,17 @@ const form = document.querySelector("#boardWriteFrm");
 form.addEventListener("submit", e => {
 
   // 제목, 내용 input 얻어오기
-  const boardTitle   = document.querySelector("[name=boardTitle]");
+  const boardTitle = document.querySelector("[name=boardTitle]");
   const boardContent = document.querySelector("[name=boardContent]");
 
-  if(boardTitle.value.trim().length === 0){
+  if (boardTitle.value.trim().length === 0) {
     alert("제목을 작성해주세요");
     boardTitle.focus();
     e.preventDefault();
     return;
   }
 
-  if(boardContent.value.trim().length === 0){
+  if (boardContent.value.trim().length === 0) {
     alert("내용을 작성해주세요");
     boardContent.focus();
     e.preventDefault();
@@ -125,7 +125,7 @@ form.addEventListener("submit", e => {
 
 $('#summernote').summernote({
   callbacks: {
-    onImageUpload: function(files) {
+    onImageUpload: function (files) {
       let formData = new FormData();
       formData.append("image", files[0]);
 
@@ -135,7 +135,7 @@ $('#summernote').summernote({
         data: formData,
         contentType: false,
         processData: false,
-        success: function(url) {
+        success: function (url) {
           $('#summernote').summernote('insertImage', url);
         }
       });
